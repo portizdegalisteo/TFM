@@ -1,0 +1,82 @@
+data_path: '/Users/portizdegalisteo/Google Drive/Master/TFM/Pablo Ortiz/Project/data' 
+
+cases_info:
+  # primary_site: 
+  #   - Pancreas
+  #   - Breast
+  # program: TCGA
+  project_id: TCGA-PAAD
+
+slide_types:
+  - Tissue Slide
+  - Diagnostic Slide
+
+rnaseq_types:
+  - HTSeq - Counts
+  - HTSeq - FPKM-UQ
+  - HTSeq - FPKM
+
+fields:
+  cases:
+    cases: 
+      - case_id 
+      - primary_site
+      - disease_type
+    project: 
+      - program.name
+      - project_id
+    demographic:
+      - gender
+      - race
+    diagnoses:
+      - age_at_diagnosis
+      - tissue_or_organ_of_origin
+      - primary_diagnosis
+      - tumor_stage
+      - morphology
+    exposures:
+      - height  
+      - weight
+      - alcohol_history 
+      - cigarettes_per_day
+
+  slides:
+    files:
+      - data_type
+      - experimental_strategy
+      - data_format
+      - file_size
+      - file_name
+    cases:
+      - primary_site
+      - disease_type
+    samples:
+      - sample_type
+      - is_ffpe
+    slides:
+      - percent_normal_cells
+      - percent_stromal_cells
+      - percent_tumor_cells
+      - percent_tumor_nuclei
+
+  rnaseq:
+    files:
+      - data_type
+      - experimental_strategy
+      - data_format
+      - file_size
+      - file_name
+    analysis:
+      - workflow_type
+    cases:
+      - primary_site
+      - disease_type
+    samples:
+      - sample_type
+
+
+
+
+
+
+
