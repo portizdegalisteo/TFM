@@ -1,0 +1,15 @@
+dataset|n_files|avg_size|total_size|tool|stream|iterative|time|speed|multiprocess|status
+dataset_1.csv|10|0.44|4.36|api|True|False|51.54|11.82||OK
+dataset_1.csv|10|0.44|4.36|api|True|True|98.28|22.54||OK
+dataset_2.csv|4|26.54|106.18|api|False|False|927.74|8.74||OK
+dataset_2.csv|4|26.54|106.18|api|False|True|842.61|7.94||OK
+dataset_2.csv|4|26.54|106.18|gdc|||149.14|1.4||OK
+dataset_2.csv|4|26.54|106.18|api|True|False|82.44|0.78||OK
+dataset_2.csv|4|26.54|106.18|api|True|True|105.63|0.99||OK
+dataset_2.csv|4|26.54|106.18|api|False|False|76.42|0.72||OK
+dataset_2.csv|4|26.54|106.18|api|False|True|131.68|1.24||OK
+dataset_3.csv|4|199.11|796.45|gdc|||786.96|0.99||OK
+dataset_3.csv|4|199.11|796.45|api|True|False|732.3|0.92||OK
+dataset_3.csv|4|199.11|796.45|api|True|True|1075.74|1.35||OK
+dataset_3.csv|4|199.11|796.45|api|False|False|766.06|0.96||OK
+dataset_3.csv|4|199.11|796.45|api|False|True|1095.74|1.38||OK
