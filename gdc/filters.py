@@ -1,11 +1,11 @@
 
 FILTER_DICT = {'cases': {'program': 'project.program.name', 
                       'project_id': 'project.project_id', 
-                      'primary_site': 'project.primary_site'},
+                      'primary_site': 'primary_site'},
                       
                'files': {'program': 'cases.project.program.name',
                          'project_id': 'cases.project.project_id',
-                         'primary_site': 'cases.project.primary_site'}
+                         'primary_site': 'cases.primary_site'}
               }
 
 def _build_single_filter(key, value, endpoint):
@@ -53,17 +53,17 @@ def _build_rnaseq_filter(workflow_types):
 
     return rnaseq_filter
 
-def build_filter(cases_info, source, 
+def build_filter(filter_conf, source, 
                  experimental_strategies=['Tissue Slide', 'Diagnostic Slide'], 
                  workflow_types=['HTSeq - Counts', 'HTSeq - FPKM-UQ', 'HTSeq - FPKM']):
 
     endpoint = 'cases' if source == 'cases' else 'files'
 
-    if len(cases_info) == 1:
-        output_filter = _build_single_filter(*list(cases_info.items())[0], endpoint)
+    if len(filter_conf) == 1:
+        output_filter = _build_single_filter(*list(filter_conf.items())[0], endpoint)
     else:
         output_filter = {'op': 'and', 
-                         'content': [_build_single_filter(k,v, endpoint) for k,v in cases_info.items()]}
+                         'content': [_build_single_filter(k,v, endpoint) for k,v in filter_conf.items()]}
 
     if source == 'slides':
     	output_filter = {'op': 'and', 'content': [_build_slide_filter(experimental_strategies), 
