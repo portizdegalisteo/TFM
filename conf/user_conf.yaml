@@ -19,7 +19,6 @@ rnaseq_types:
 fields:
   cases:
     cases: 
-      - case_id 
       - primary_site
       - disease_type
     project: 

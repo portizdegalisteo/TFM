@@ -50,11 +50,17 @@ def _process_slide_json(file_json, fields):
         file_data['file_size'] = round(file_data['file_size'] / 10**6, 2)
     
     # Cases
-    case_json = find_elem_by_submitter_id(file_json['cases'], submitter_id=file_data['case_id'])
+    if len(file_json['cases']) > 1:
+        case_json = find_elem_by_submitter_id(file_json['cases'], submitter_id=file_data['case_id'])
+    else:
+        case_json = file_json['cases'][0]
     case_data = {k: case_json.get(k) for k in fields['cases']}
     
     # Samples
-    sample_json = find_elem_by_submitter_id(case_json['samples'], submitter_id=file_data['sample_id'])
+    if len(case_json['samples']) > 1:
+        sample_json = find_elem_by_submitter_id(case_json['samples'], submitter_id=file_data['sample_id'])
+    else:
+        sample_json = case_json['samples'][0]
     sample_data = {k: sample_json.get(k) for k in fields['samples']}
 
     # Slides
@@ -69,7 +75,7 @@ def _process_slide_json(file_json, fields):
 def get_cases(filter, fields, max_results=10000):
 
     # Build query
-    query_fields = fields['cases']
+    query_fields = ['submitter_id'] + fields['cases']
     for source, source_fields in fields.items():
         if source != 'cases':
             query_fields += [source + '.' + x for x in source_fields]
@@ -93,7 +99,9 @@ def get_cases(filter, fields, max_results=10000):
     cases_df.columns = [x.replace('.0', '') for x in cases_df.columns]
     cases_df = cases_df[query_fields]
 
+    cases_df.rename(columns={'submitter_id': 'case_id'}, inplace=True)
     cases_df.rename(columns={'project.program.name': 'program_name'}, inplace=True)
+
     cases_df.columns = [x.rsplit('.')[-1] for x in cases_df.columns]
     
     return cases_df
@@ -167,6 +175,7 @@ def get_slides_metadata(filter, fields, max_results=10000,
 
     # Process output
     slides_data = []
+
     for hit in response_json['data']['hits']:
         slide_data = _process_slide_json(hit, fields)
         slides_data.append(slide_data)
