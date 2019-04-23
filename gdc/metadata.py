@@ -72,7 +72,7 @@ def _process_slide_json(file_json, fields):
     
     return all_data
 
-def get_cases(filter, fields, max_results=10000):
+def get_cases(filter_conf, fields, max_results=10000):
 
     # Build query
     query_fields = ['submitter_id'] + fields['cases']
@@ -80,7 +80,7 @@ def get_cases(filter, fields, max_results=10000):
         if source != 'cases':
             query_fields += [source + '.' + x for x in source_fields]
 
-    query_filter = build_filter(filter, source='cases')
+    query_filter = build_filter(filter_conf, source='cases')
 
     params = {'fields': ','.join(query_fields),
               'filters': query_filter, 
@@ -107,7 +107,7 @@ def get_cases(filter, fields, max_results=10000):
     return cases_df
 
 
-def get_rnaseq_metadata(filter, fields, max_results=10000, 
+def get_rnaseq_metadata(filter_conf, fields, max_results=10000, 
                         workflow_types=['HTSeq - Counts', 'HTSeq - FPKM-UQ', 'HTSeq - FPKM']):
 
     # Build query
@@ -115,7 +115,7 @@ def get_rnaseq_metadata(filter, fields, max_results=10000,
     query_fields = [SOURCE_PREFIXES.get(s, s + '.') + f for s,fs in fields.items() for f in fs]
     query_fields = id_fields + query_fields
 
-    query_filter = build_filter(filter, source='rnaseq', workflow_types=workflow_types)
+    query_filter = build_filter(filter_conf, source='rnaseq', workflow_types=workflow_types)
 
     params = {'fields': ','.join(query_fields),
               'filters': query_filter, 
@@ -152,7 +152,7 @@ def get_rnaseq_metadata(filter, fields, max_results=10000,
     return rnaseq_df
 
 
-def get_slides_metadata(filter, fields, max_results=10000,
+def get_slides_metadata(filter_conf, fields, max_results=10000,
                         experimental_strategies=['Tissue Slide', 'Diagnostic Slide']):
 
     # Build query
@@ -162,7 +162,7 @@ def get_slides_metadata(filter, fields, max_results=10000,
     query_fields = [SOURCE_PREFIXES.get(s, s + '.') + f for s,fs in fields.items() for f in fs]
     query_fields = id_fields + query_fields
 
-    query_filter = build_filter(filter, source='slides', experimental_strategies=experimental_strategies)
+    query_filter = build_filter(filter_conf, source='slides', experimental_strategies=experimental_strategies)
 
     params = {'fields': ','.join(query_fields),
               'filters': query_filter, 
