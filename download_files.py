@@ -23,7 +23,7 @@ def main(args):
         conf = yaml.load(f)
 
     # Create directories
-    slides_path = os.path.join(conf['data_path'], 'slides')
+    slides_path = os.path.join(conf['data_path'], 'slides', 'svs')
     if not os.path.exists(slides_path):
         os.mkdir(slides_path)
 

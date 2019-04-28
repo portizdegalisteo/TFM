@@ -2,6 +2,7 @@
 .ipynb_checkpoints
 data/
 old/
+.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
