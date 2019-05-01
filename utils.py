@@ -1,6 +1,7 @@
 from datetime import datetime
 import openslide
 from wsi.slide import downsample
+from PIL import Image
 
 class Timer:
     def __init__(self):
@@ -18,3 +19,7 @@ class Timer:
             self.restart()
             
         return time_elapsed
+
+
+def display_image_array(img_array, display_size=(400,400)):
+    return Image.fromarray(img_array).resize(display_size)

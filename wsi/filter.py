@@ -38,9 +38,12 @@ def filter_greys(rgb, tolerance=15, reverse=False):
 
 
 def get_blank_pixel_percetange(img):
+
+    if len(img.shape) == 3:
+        img = rgb_to_gray(img)
     
     blank_pixels = (img <= 0).sum()
     total_pixels = img.size
-    percetange_zero = round(100 * blank_pixels / total_pixels, 2)
+    percetange_blank = round(100 * blank_pixels / total_pixels, 2)
     
-    return percetange_zero
+    return percetange_blank
