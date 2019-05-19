@@ -171,6 +171,7 @@ def get_slides_metadata(filter_conf, fields, max_results=10000,
 
     # Run query
     response_json = requests.post(FILES_ENDPOINT, headers={'Content-Type': 'application/json'}, json=params)
+    
     response_json = json.loads(response_json.content)
 
     # Process output

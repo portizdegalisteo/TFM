@@ -1,4 +1,4 @@
-data_path: '/Users/portizdegalisteo/TFM_Data' 
+data_path: '/home/jupyter/data' 
 
 cases_info:
   # primary_site: 
