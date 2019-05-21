@@ -1,4 +1,5 @@
-data_path: '/home/jupyter/data' 
+# data_path: '/home/jupyter/data' 
+data_path: '/Users/portizdegalisteo/TFM_Data' 
 
 cases_info:
   # primary_site: 
@@ -73,8 +74,11 @@ fields:
     samples:
       - sample_type
 
-
-
+wsi:
+  magnification: 2.5
+  patch_size: 128
+  thumnail_size: 1024
+  blank_pixel_threshold: 30
 
 
 

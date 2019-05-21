@@ -3,6 +3,12 @@ from PIL import Image
 import os
 import openslide
 import numpy as np
+import pandas as pd
+try:
+    get_ipython()
+    from tqdm import tqdm_notebook as tqdm
+except:
+    from tqdm import tqdm
 
 from wsi.filter import filter_greys, filter_whites
 from wsi.filter import get_blank_pixel_percetange
@@ -97,3 +103,22 @@ def patch_slide(image, output_dir, patch_size, magnification, filter=True, blank
     number_of_patches = len(patches_params)
 
     return number_of_patches, n_saved
+
+
+def patch_slides(slide_files, output_dir, patch_size, magnification, filter=True, blank_pixel_thresh=30):
+
+    if isinstance(slide_files, pd.Series):
+        slide_files = slide_files.values
+
+    results = []
+    for slide_file in tqdm(slide_files):
+            
+        os_img = openslide.open_slide(slide_file)
+        n_patches, n_valid_patches = patch_slide(os_img, output_dir, patch_size, magnification)
+        
+        results.append({'file':slide_file.rsplit('/', 1)[-1], 'total_patches': n_patches, 'valid_patches': n_valid_patches, 
+                        'perc_valid_patches': round(n_valid_patches / n_patches, 2)})
+
+    results = pd.DataFrame(results)
+
+    return results
