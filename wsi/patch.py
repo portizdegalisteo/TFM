@@ -114,7 +114,8 @@ def patch_slides(slide_files, output_dir, patch_size, magnification, filter=True
     for slide_file in tqdm(slide_files):
             
         os_img = openslide.open_slide(slide_file)
-        n_patches, n_valid_patches = patch_slide(os_img, output_dir, patch_size, magnification)
+        n_patches, n_valid_patches = patch_slide(os_img, output_dir, patch_size, 
+                                                 magnification, filter, blank_pixel_thresh)
         
         results.append({'file':slide_file.rsplit('/', 1)[-1], 'total_patches': n_patches, 'valid_patches': n_valid_patches, 
                         'perc_valid_patches': round(n_valid_patches / n_patches, 2)})
