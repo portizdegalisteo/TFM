@@ -1,5 +1,5 @@
-# data_path: '/home/jupyter/data' 
-data_path: '/Users/portizdegalisteo/TFM_Data' 
+data_path: '/home/jupyter/data' 
+# data_path: '/Users/portizdegalisteo/TFM_Data' 
 
 cases_info:
   # primary_site: 
