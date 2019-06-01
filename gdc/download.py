@@ -15,10 +15,11 @@ except:
 
 DATA_ENDPOINT = 'https://api.gdc.cancer.gov/data/'
 
-def get_tqdm():
-    return tqdm
 
 def gdc_tool_download(files, out_dir, gdc_tool):
+    """
+    Downloads a list of files from the GDC server using the GDC Tool.
+    """
     
     if isinstance(files, pd.DataFrame):
         files = files['file_id'].tolist()
