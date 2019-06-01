@@ -11,7 +11,7 @@ except:
     from tqdm import tqdm
 
 from wsi.filter import filter_greys, filter_whites
-from wsi.filter import get_blank_pixel_percetange
+from wsi.filter import get_white_pixel_percetange
 
 
 def _fix_location_bug(location, height_shift, width_shift, level_downsample):
@@ -73,7 +73,7 @@ def get_slide_patches_params(image, patch_size, magnification):
     return patches
 
 
-def patch_slide(image, output_dir, patch_size, magnification, filter=True, blank_pixel_thresh=30):
+def patch_slide(image, output_dir, patch_size, magnification, white_pixel_thresh=20, white_max_value=220):
 
     if isinstance(image, openslide.OpenSlide):
         opeslide_image = image
@@ -89,23 +89,20 @@ def patch_slide(image, output_dir, patch_size, magnification, filter=True, blank
 
         patch_arr = _read_patch(opeslide_image, params, patch_size)
         out_file_name = file_name.replace('.svs', '') + '_{:02d}_{:02d}.png'.format(*params['index'])
+        
+        blank_pixel_perc = get_white_pixel_percetange(patch_arr, white_max_value)
 
-        if filter:
-            patch_arr = filter_whites(patch_arr)
-            patch_arr = filter_greys(patch_arr, tolerance=100, reverse=False)
-            blank_pixel_perc = get_blank_pixel_percetange(patch_arr)
-
-            if blank_pixel_perc <= blank_pixel_thresh:
-                patch_img = Image.fromarray(patch_arr)
-                patch_img.save(os.path.join(output_dir, out_file_name))
-                n_saved += 1
+        if blank_pixel_perc <= white_pixel_thresh:
+            patch_img = Image.fromarray(patch_arr)
+            patch_img.save(os.path.join(output_dir, out_file_name))
+            n_saved += 1
 
     number_of_patches = len(patches_params)
 
     return number_of_patches, n_saved
 
 
-def patch_slides(slide_files, output_dir, patch_size, magnification, filter=True, blank_pixel_thresh=30):
+def patch_slides(slide_files, output_dir, patch_size, magnification, white_pixel_thresh=20, white_max_value=220):
 
     if isinstance(slide_files, pd.Series):
         slide_files = slide_files.values
@@ -114,10 +111,11 @@ def patch_slides(slide_files, output_dir, patch_size, magnification, filter=True
     for slide_file in tqdm(slide_files):
             
         os_img = openslide.open_slide(slide_file)
-        n_patches, n_valid_patches = patch_slide(os_img, output_dir, patch_size, 
-                                                 magnification, filter, blank_pixel_thresh)
+        n_patches, n_valid_patches = patch_slide(os_img, output_dir, patch_size, magnification, white_pixel_thresh)
         
-        results.append({'file':slide_file.rsplit('/', 1)[-1], 'total_patches': n_patches, 'valid_patches': n_valid_patches, 
+        results.append({'file':slide_file.rsplit('/', 1)[-1], 
+                        'total_patches': n_patches, 
+                        'valid_patches': n_valid_patches, 
                         'perc_valid_patches': round(n_valid_patches / n_patches, 2)})
 
     results = pd.DataFrame(results)
