@@ -1,10 +1,17 @@
+import os
 import numpy as np
 from matplotlib import pyplot as plt
+from matplotlib import image as mpimage
 from datetime import datetime
-
 import openslide
 from wsi.slide import downsample
 from PIL import Image
+
+try:
+    get_ipython()
+    from tqdm import tqdm_notebook as tqdm
+except:
+    from tqdm import tqdm
 
 
 class Timer:
@@ -29,6 +36,17 @@ def display_image_array(img_array, display_size=(400,400)):
     return Image.fromarray(img_array).resize(display_size)
 
 
+def read_images(filenames, directory=None):
+
+    imgs_array = []
+
+    for filename in tqdm(filenames, unit='imgs'):
+        filename = os.path.join(directory, filename) if directory else filename
+        img_array = mpimage.imread(filename)
+        imgs_array.append(img_array)
+    
+    return imgs_array
+
 def plot_sample_imgs(images, n_rows=2, n_cols=6, size=3, color=True):
         
     plt.figure(figsize=(n_cols * size, n_rows * size))
@@ -45,6 +63,7 @@ def plot_sample_imgs(images, n_rows=2, n_cols=6, size=3, color=True):
         
         plt.axis('off')
         plt.title(str(idx))
+
 
 def plot_paired_imgs(X_img, Y_img, N, orient='h', size=3, color=True):
     
