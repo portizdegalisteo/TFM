@@ -74,7 +74,7 @@ def get_slide_patches_params(image, patch_size, magnification):
 
 
 def patch_slide(image, output_dir, patch_size, magnification, white_pixel_thresh=20, 
-                white_max_value=220, sampling=1):
+                sampling=1, white_max_value=220):
 
     white_pixel_thresh = white_pixel_thresh if white_pixel_thresh else 100
 
@@ -88,13 +88,15 @@ def patch_slide(image, output_dir, patch_size, magnification, white_pixel_thresh
     patches_params = get_slide_patches_params(opeslide_image, patch_size, magnification)
 
     n_saved = 0
+    n_total = 0
+    
     for params in patches_params:
 
         if np.random.uniform() >= sampling:
             continue
 
         patch_arr = _read_patch(opeslide_image, params, patch_size)
-        out_file_name = file_name.replace('.svs', '') + '_{:02d}_{:02d}.png'.format(*params['index'])
+        out_file_name = file_name.replace('.svs', '') + '_{:03d}_{:03d}.png'.format(*params['index'])
         
         blank_pixel_perc = get_white_pixel_percetange(patch_arr, white_max_value)
 
@@ -102,14 +104,14 @@ def patch_slide(image, output_dir, patch_size, magnification, white_pixel_thresh
             patch_img = Image.fromarray(patch_arr)
             patch_img.save(os.path.join(output_dir, out_file_name))
             n_saved += 1
+        
+        n_total += 1
 
-    number_of_patches = len(patches_params)
-
-    return number_of_patches, n_saved
+    return n_total, n_saved
 
 
 def patch_slides(slide_files, output_dir, patch_size, magnification, 
-                 white_pixel_thresh=20, white_max_value=220, sampling=1):
+                 white_pixel_thresh=20, sampling=1, white_max_value=220):
 
     if isinstance(slide_files, pd.Series):
         slide_files = slide_files.values
@@ -119,7 +121,7 @@ def patch_slides(slide_files, output_dir, patch_size, magnification,
             
         os_img = openslide.open_slide(slide_file)
         n_patches, n_valid_patches = patch_slide(os_img, output_dir, patch_size, magnification, 
-                                                 white_pixel_thresh, white_max_value, sampling)
+                                                 white_pixel_thresh, sampling, white_max_value)
         
         results.append({'file':slide_file.rsplit('/', 1)[-1], 
                         'total_patches': n_patches, 
