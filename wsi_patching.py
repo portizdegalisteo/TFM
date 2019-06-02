@@ -23,7 +23,7 @@ def main(args):
     slides_df = slides_df[slides_df['file_name'].isin(os.listdir(slides_path))]
 
     # Thumbnails
-    if args.thumbails:
+    if args.thumbnails:
 
         thumbnails_path = os.path.join(conf['data_path'], 'slides', 'thumbnail')
         if not os.path.exists(thumbnails_path):
@@ -40,7 +40,8 @@ def main(args):
         os.mkdir(patches_path)
 
     slide_files = slides_df['file_name'].map(lambda x: os.path.join(slides_path, x))
-    patching_results = patch_slides(slide_files, patches_path, conf['wsi']['patch_size'], conf['wsi']['magnification'])
+    patching_results = patch_slides(slide_files, patches_path, conf['wsi']['patch_size'], 
+                                    conf['wsi']['magnification'], conf['wsi']['white_pixel_threshold'])
     
     patching_results.to_csv(os.path.join(conf['data_path'], 'patching_results.csv'), sep='|', index=False)
 

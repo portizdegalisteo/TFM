@@ -77,8 +77,8 @@ fields:
 wsi:
   magnification: 2.5
   patch_size: 128
-  thumnail_size: 1024
-  blank_pixel_threshold: 30
+  thumbnail_size: 1024
+  white_pixel_threshold: 20
 
 
 

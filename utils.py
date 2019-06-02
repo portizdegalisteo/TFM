@@ -45,7 +45,7 @@ def read_images(filenames, directory=None):
         img_array = mpimage.imread(filename)
         imgs_array.append(img_array)
     
-    return imgs_array
+    return np.array(imgs_array)
 
 def plot_sample_imgs(images, n_rows=2, n_cols=6, size=3, color=True):
         
@@ -76,30 +76,32 @@ def plot_paired_imgs(X_img, Y_img, N, orient='h', size=3, color=True):
     
     for i in range(N):
     
-        idx = np.random.randint(0, len(X_img - 1))
+        idx = np.random.randint(0, len(X_img) - 1)
         
+        # Plot X
         if orient == 'h':
             plt.subplot(2, N, i+1)
         else:
             plt.subplot(N, 2, i*2+1)
         
         if color:
-            plt.imshow(X_img[idx,:,:,0], cmap=plt.get_cmap("Greys"))
+            plt.imshow(X_img[idx,:,:,:])        
         else:
-            plt.imshow(X_img[idx,:,:,:])
+            plt.imshow(X_img[idx,:,:,0], cmap=plt.get_cmap("Greys"))
 
         plt.axis('off')
         plt.title('X ' + str(idx))
         
+        # Plot Y
         if orient == 'h':
             plt.subplot(2, N, i + 1 + N)
         else:
             plt.subplot(N, 2, i*2+2)
             
         if color:
-            plt.imshow(Y_img[idx,:,:,0], cmap=plt.get_cmap("Greys"))
-        else:
             plt.imshow(Y_img[idx,:,:,:])        
+        else:
+            plt.imshow(Y_img[idx,:,:,0], cmap=plt.get_cmap("Greys"))
         
         plt.axis('off')
         plt.title('Y ' + str(idx))
