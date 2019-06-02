@@ -47,7 +47,7 @@ def read_images(filenames, directory=None):
     
     return np.array(imgs_array)
 
-def plot_sample_imgs(images, n_rows=2, n_cols=6, size=3, color=True):
+def plot_sample_imgs(images, n_rows=2, n_cols=6, size=3, color=True, shuffle=True):
         
     plt.figure(figsize=(n_cols * size, n_rows * size))
     
@@ -55,7 +55,11 @@ def plot_sample_imgs(images, n_rows=2, n_cols=6, size=3, color=True):
         
         plt.subplot(n_rows, n_cols, i + 1)
         
-        idx = np.random.randint(0, len(images) -1)
+        if shuffle:
+            idx = np.random.randint(0, len(images) - 1)
+        else:
+            idx = i
+
         if color:
             plt.imshow(images[idx,:,:,:])
         else:
@@ -65,7 +69,7 @@ def plot_sample_imgs(images, n_rows=2, n_cols=6, size=3, color=True):
         plt.title(str(idx))
 
 
-def plot_paired_imgs(X_img, Y_img, N, orient='h', size=3, color=True):
+def plot_paired_imgs(X_img, Y_img, N, orient='h', size=3, color=True, shuffle=True):
     
     if orient == 'h':
         figsize = (N * size, 2 * size)
@@ -76,7 +80,10 @@ def plot_paired_imgs(X_img, Y_img, N, orient='h', size=3, color=True):
     
     for i in range(N):
     
-        idx = np.random.randint(0, len(X_img) - 1)
+        if shuffle:
+            idx = np.random.randint(0, len(X_img) - 1)
+        else:
+            idx = i
         
         # Plot X
         if orient == 'h':
