@@ -10,7 +10,7 @@ cases_info:
 
 slide_types:
   - Tissue Slide
-  - Diagnostic Slide
+  # - Diagnostic Slide
 
 rnaseq_types:
   - HTSeq - Counts
@@ -79,6 +79,17 @@ wsi:
   patch_size: 128
   thumbnail_size: 1024
   white_pixel_threshold: 20
+  sampling: 1
+  
+model:
+  filters: 
+    - 8
+    - 16
+    - 32
+  latent_features: 512
+  epochs: 30
+  
+seed: 1993
 
 
 
