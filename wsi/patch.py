@@ -73,7 +73,10 @@ def get_slide_patches_params(image, patch_size, magnification):
     return patches
 
 
-def patch_slide(image, output_dir, patch_size, magnification, white_pixel_thresh=20, white_max_value=220):
+def patch_slide(image, output_dir, patch_size, magnification, white_pixel_thresh=20, 
+                white_max_value=220, sampling=1):
+
+    white_pixel_thresh = white_pixel_thresh if white_pixel_thresh else 100
 
     if isinstance(image, openslide.OpenSlide):
         opeslide_image = image
@@ -86,6 +89,9 @@ def patch_slide(image, output_dir, patch_size, magnification, white_pixel_thresh
 
     n_saved = 0
     for params in patches_params:
+
+        if np.random.uniform() >= sampling:
+            continue
 
         patch_arr = _read_patch(opeslide_image, params, patch_size)
         out_file_name = file_name.replace('.svs', '') + '_{:02d}_{:02d}.png'.format(*params['index'])
@@ -102,7 +108,8 @@ def patch_slide(image, output_dir, patch_size, magnification, white_pixel_thresh
     return number_of_patches, n_saved
 
 
-def patch_slides(slide_files, output_dir, patch_size, magnification, white_pixel_thresh=20, white_max_value=220):
+def patch_slides(slide_files, output_dir, patch_size, magnification, 
+                 white_pixel_thresh=20, white_max_value=220, sampling=1):
 
     if isinstance(slide_files, pd.Series):
         slide_files = slide_files.values
@@ -111,7 +118,8 @@ def patch_slides(slide_files, output_dir, patch_size, magnification, white_pixel
     for slide_file in tqdm(slide_files):
             
         os_img = openslide.open_slide(slide_file)
-        n_patches, n_valid_patches = patch_slide(os_img, output_dir, patch_size, magnification, white_pixel_thresh)
+        n_patches, n_valid_patches = patch_slide(os_img, output_dir, patch_size, magnification, 
+                                                 white_pixel_thresh, white_max_value, sampling)
         
         results.append({'file':slide_file.rsplit('/', 1)[-1], 
                         'total_patches': n_patches, 
