@@ -1,11 +1,14 @@
 import os
 import numpy as np
-from matplotlib import pyplot as plt
-from matplotlib import image as mpimage
+
 from datetime import datetime
 import openslide
 from wsi.slide import downsample
 from PIL import Image
+
+from matplotlib import pyplot as plt
+from matplotlib import image as mpimage
+from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 
 try:
     get_ipython()
@@ -112,3 +115,26 @@ def plot_paired_imgs(X_img, Y_img, N, orient='h', size=3, color=True, shuffle=Tr
         
         plt.axis('off')
         plt.title('Y ' + str(idx))
+        
+        
+
+def imscatter(x, y, images, ax=None, zoom=1, lw=0, color='black'):
+    
+    if ax is None:
+        ax = plt.gca()
+    
+    x, y = np.atleast_1d(x, y)
+    artists = []
+    
+    for x0, y0, image in zip(x, y, images):
+        
+        image = plt.imread(image)
+        im = OffsetImage(image, zoom=zoom)
+        
+        ab = AnnotationBbox(im, (x0, y0), xycoords='data', frameon=True, 
+                            bboxprops=dict(edgecolor=color, boxstyle="square,pad=0", lw=lw))
+        
+        artists.append(ax.add_artist(ab))
+    ax.update_datalim(np.column_stack([x, y]))
+    ax.autoscale()
+    return artists
