@@ -50,7 +50,8 @@ def read_images(filenames, directory=None):
     
     return np.array(imgs_array)
 
-def plot_sample_imgs(images, n_rows=2, n_cols=6, size=3, color=True, shuffle=True):
+def plot_sample_imgs(images, n_rows=2, n_cols=6, size=3, color=True, shuffle=True, 
+                     labels=None):
         
     plt.figure(figsize=(n_cols * size, n_rows * size))
     
@@ -69,7 +70,11 @@ def plot_sample_imgs(images, n_rows=2, n_cols=6, size=3, color=True, shuffle=Tru
             plt.imshow(images[idx,:,:,0], cmap=plt.get_cmap("Greys"))
         
         plt.axis('off')
-        plt.title(str(idx))
+        
+        if labels is not None:
+            plt.title(labels[idx], fontsize=16)
+        else:
+            plt.title(str(idx))
 
 
 def plot_paired_imgs(X_img, Y_img, N, orient='h', size=3, color=True, shuffle=True):
