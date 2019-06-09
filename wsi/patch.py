@@ -58,8 +58,8 @@ def get_slide_patches_params(image, patch_size, magnification):
     for height_shift in range(0, int(round(level_height / level_patch_size))):
         for width_shift in range(0, int(round(level_width / level_patch_size))):
 
-            location = [int(width_shift * patch_size * level_downsample), 
-                        int(height_shift * patch_size * level_downsample)]
+            location = [int(width_shift * level_patch_size * level_downsample), 
+                        int(height_shift * level_patch_size * level_downsample)]
 
             location = _fix_location_bug(location, height_shift, width_shift, level_downsample)
 
@@ -125,9 +125,9 @@ def patch_slides(slide_files, output_dir, patch_size, magnification,
         
         results.append({'file':slide_file.rsplit('/', 1)[-1], 
                         'total_patches': n_patches, 
-                        'valid_patches': n_valid_patches, 
-                        'perc_valid_patches': round(n_valid_patches / n_patches, 2)})
+                        'saved_patches': n_valid_patches, 
+                        'perc_saved_patches': round(n_valid_patches / n_patches, 2)})
 
-    results = pd.DataFrame(results)
+    results = pd.DataFrame(results)[['file', 'total_patches', 'saved_patches', 'perc_saved_patches']]
 
     return results
