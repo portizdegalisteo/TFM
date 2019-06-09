@@ -1,32 +1,34 @@
-sudo -su jupyter bash
-cd
-# wget https://repo.anaconda.com/archive/Anaconda3-2019.03-Linux-x86_64.sh
-wget https://repo.anaconda.com/archive/Anaconda2-2018.12-Linux-x86_64.sh
+# Install programs
+sudo apt-get install git
+sudo apt-get install bzip2
+sudo apt-get install byobu
+sudo apt-get install openslide-tools
+sudo apt-get install gcc
+sudo apt-get install python3-dev
+sudo apt-get install python3-openslide
 
-/bin/bash Anaconda3-2019.03-Linux-x86_64.sh -b
+
+# Install anaconda
+wget https://repo.anaconda.com/archive/Anaconda3-2018.12-Linux-x86_64.sh
+/bin/bash Anaconda3-2018.12-Linux-x86_64.sh
 rm Anaconda3-2019.03-Linux-x86_64.sh
 
 
-conda install ipykernel
-ipython kernel install --name base --user
+# Install libraries
+pip install openslide-python
+conda install nodejs
 
+# TF and Keras for GPU
+# conda install tensorflow-gpu 
+# conda install -c anaconda keras-gpu 
+
+# TF and Keras
+conda install tensorflow
+conda install keras
+
+pip install tensorboard
 
 
 pip install ipywidgets 
-
 jupyter nbextension enable --py widgetsnbextension
 jupyter labextension install @jupyter-widgets/jupyterlab-manager
-
-
-apt-get install openslide-tools	
-apt-get install python3-openslide
-pip install openslide-python
-pip install numpy==1.15.4 
-pip install pandas==0.23.4
-
-
-conda install tensorflow-gpu 
-conda install keras-gpu 
-conda install -c anaconda keras-gpu 
-
-# gcloud auth login
