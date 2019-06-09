@@ -1,5 +1,5 @@
-data_path: '/home/jupyter/data' 
-# data_path: '/Users/portizdegalisteo/TFM_Data' 
+# data_path: '/home/jupyter/data' 
+data_path: '/Users/portizdegalisteo/TFM_Data' 
 
 cases_info:
   # primary_site: 
@@ -10,7 +10,7 @@ cases_info:
 
 slide_types:
   - Tissue Slide
-  # - Diagnostic Slide
+  - Diagnostic Slide
 
 rnaseq_types:
   - HTSeq - Counts
@@ -82,11 +82,12 @@ wsi:
   sampling: 1
   
 model:
-  filters: 
-    - 8
-    - 16
-    - 32
-  latent_features: 512
+  cae:
+    filters: 
+      - 8
+      - 16
+      - 32
+    latent_features: 512
   epochs: 30
   
 seed: 1993
